@@ -2,6 +2,7 @@ import { Row } from "read-excel-file";
 
 export type normalizedRow = [number[], number]
 
+// функция, которая приводит данные из excel в нужный формат
 export default function normalizeRows(rows: Row[]): normalizedRow[] {
 
     rows.sort((a, b) => {

@@ -1,11 +1,17 @@
 import { Row } from "read-excel-file";
 import normalizeRows, { normalizedRow } from "../../../functions/normalizeRows.js";
 
-export default function dualCurrencyStrategy(coins: Row[][], budgetToBuy: number, APR: number) {
+// функция реализации стратегии бивалютного инвестирования
+// описание стратегии приведено в README.md
+export default function dualCurrencyStrategy(
+    coins: Row[][], 
+    budgetToBuy: number, 
+    APR: number,
+    strategy: 0 | 1
+) {
 
     const goalPrice = 0.9997 // множитель целевой цены
-    const coinsCount = []
-    const coinsPlus = []
+    const coinsCount = [] // итоговое количество каждой из переданных монет
 
     let globalBuy = 0 // индекс той монеты, которую глобально будем покупать
     let localBuy = 0 // индекс той монеты, которую будем покупать, 
@@ -14,14 +20,14 @@ export default function dualCurrencyStrategy(coins: Row[][], budgetToBuy: number
     let normizedMatrix: normalizedRow[][] = []
 
     for (const coin of coins) {
+
         normizedMatrix.push(normalizeRows(coin))
         coinsCount.push(0)
-        coinsPlus.push(0)
+        
     }
 
     let needBuy = true
     let currBudget = budgetToBuy // текущий бюджет с учётом возможного APR 
-    let res = ""
     let prevRow = normizedMatrix[0][0]
 
     for (let i = 1; i < normizedMatrix[0].length; i++) {
@@ -52,23 +58,21 @@ export default function dualCurrencyStrategy(coins: Row[][], budgetToBuy: number
 
             currBudget *= 1 + (APR / 365 / 100)
             localBuy++
-            res = "GET USDT"
 
         } else {
 
             // целевая цена достингута. покупаем монету по этой цене и получаем бонус APR 
             const cointGet = currBudget / (prevRow[1]*goalPrice)
             coinsCount[localBuy % coins.length] += cointGet + cointGet * (APR / 365 / 100)
-            coinsPlus[localBuy % coins.length]++
-            res = `GET COIN (${localBuy % coins.length}, ${globalBuy})`
-            globalBuy++
+
+            if (strategy === 0) globalBuy++
+            if (strategy === 1) globalBuy = localBuy + 1
+            
             localBuy = globalBuy
             currBudget = budgetToBuy
             if (globalBuy % coins.length == 0) needBuy = false
 
         }
-
-        console.log(prevRow, currRow, res, currBudget)
 
         prevRow = normizedMatrix[localBuy % coins.length][i]
         

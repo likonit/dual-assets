@@ -9,21 +9,20 @@ const ltc = await readExcelFile("data/ltc.xlsx", new Set([0]))
 const eth = await readExcelFile("data/eth.xlsx", new Set([0]))
 
 const arr = [xrp, dash, btc, ltc, eth]
+
 const pricesJust = [justBuy(xrp, 1000), justBuy(dash, 1000), justBuy(btc, 1000), justBuy(ltc, 1000), justBuy(eth, 1000)]
-const pricesSmart = dualCurrencyStrategy(arr, 1000, 700)
+const pricesSmart_0 = dualCurrencyStrategy(arr, 1000, 700, 0)
+const pricesSmart_1 = dualCurrencyStrategy(arr, 1000, 700, 1)
 
-let sum1 = 0
-let sum2 = 0
-pricesJust.forEach((item, i) => {
+let sum_just_buy = 0
+let sum_smart_buy_0 = 0
+let sum_smart_buy_1 = 0
 
-    sum1 += (item * +arr[i].at(-1)[1])
+// получаем сумму активов по последней цене каждой монеты
+pricesJust.forEach((item, i) => sum_just_buy += (item * +arr[i].at(-1)[1]))
+pricesSmart_0[0].forEach((item, i) => sum_smart_buy_0 += (item * +arr[i].at(-1)[1]))
+pricesSmart_1[0].forEach((item, i) => sum_smart_buy_1 += (item * +arr[i].at(-1)[1]))
 
-})
-
-pricesSmart[0].forEach((item, i) => {
-
-    sum2 += (item * +arr[i].at(-1)[1])
-
-})
-console.log(sum1)
-console.log(((sum2 - sum1) / sum1) * 100)
+console.log(sum_just_buy)
+console.log(sum_smart_buy_0)
+console.log(sum_smart_buy_1)
