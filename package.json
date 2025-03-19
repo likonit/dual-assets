@@ -1,0 +1,20 @@
+{
+  "name": "leetcode",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "tsc & node dist/index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@types/node": "^22.13.4"
+  },
+  "dependencies": {
+    "@types/readline-sync": "^1.4.8",
+    "read-excel-file": "^5.8.6",
+    "readline-sync": "^1.4.10"
+  }
+}
