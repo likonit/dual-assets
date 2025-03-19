@@ -1,11 +1,13 @@
 import readXlsxFile from "read-excel-file/node"
 import * as fs from "fs"
 
-export default async function readExcelFile(filename: string, excludeLines: Set<number>) {
+// функция считывания excel-файла
+export default async function readExcelFile(filename: string, excludedLines: Set<number>) {
 
     const file = fs.readFileSync(filename)
     const rows = await readXlsxFile(file)
 
-    return rows.filter((_, i) => !excludeLines.has(i))
+    // фильтруем ненужные строки
+    return rows.filter((_, i) => !excludedLines.has(i))
 
 }

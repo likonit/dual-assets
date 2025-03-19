@@ -3,7 +3,6 @@ import normalizeRows, { normalizedRow } from "../../../functions/normalizeRows.j
 
 export default function dualCurrencyStrategy(coins: Row[][], budgetToBuy: number, APR: number) {
 
-    // console.log(coins[0][0], coins[1][0], coins[2][0], coins[3][0], coins[4][0])
     const goalPrice = 0.9997 // множитель целевой цены
     const coinsCount = []
     const coinsPlus = []
@@ -54,22 +53,6 @@ export default function dualCurrencyStrategy(coins: Row[][], budgetToBuy: number
             currBudget *= 1 + (APR / 365 / 100)
             localBuy++
             res = "GET USDT"
-
-            // if (localBuy % coins.length == globalBuy % coins.length) {
-
-            //     // мы прошлись по всем монетам, и не одна нам не вернулась с бонусом.
-            //     // значит покупаем ту монету, с которой начали по рыночной цене
-                
-            //     const coinGet = currBudget / normizedMatrix[localBuy % coins.length][i][1]
-            //     coinsCount[localBuy % coins.length] += coinGet
-            //     coinsPlus[localBuy % coins.length]++
-            //     res = `END (${localBuy % coins.length}, ${globalBuy})`
-            //     globalBuy++
-            //     localBuy = globalBuy
-            //     currBudget = budgetToBuy
-            //     if (globalBuy % coins.length == 0) needBuy = false
-
-            // }
 
         } else {
 

@@ -14,6 +14,7 @@ export default function justBuy(rows: Row[], budgetToBuy: number) {
         let currDate = normalizedRows[i][0]
 
         if (currDate[1] != prevDate[1]) {
+            
             // месяц поменялся
             buycnt++
             coinsCount += budgetToBuy / normalizedRows[i][1]
