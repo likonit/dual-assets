@@ -48,19 +48,31 @@ export default function dualCurrencyStrategy(
             if (strategy == 2) {
 
                 localBuy++
-                // реализуем стратегию 2
                 let nextRow = normizedMatrix[(localBuy-1) % coins.length][i]
-                
                 coinsCount[(localBuy-1) % coins.length] += currBudget / nextRow[1]
+                
                 bought++
                 currBudget = budgetToBuy
 
             }
 
-            if (strategy == 3) {
+            if (strategy == 3 || strategy == 4) {
 
                 bought++
                 currBudget += budgetToBuy
+
+                if (strategy == 4) {
+
+                    // если это последняя монета, которую мы можем купить в этом месяце - покупаем
+                    if (bought == canBuy) {
+
+                        localBuy++
+                        let nextRow = normizedMatrix[(localBuy-1) % coins.length][i]
+                        coinsCount[(localBuy-1) % coins.length] += currBudget / nextRow[1]
+                        currBudget = budgetToBuy
+
+                    }
+                }
 
             }
 
@@ -80,6 +92,7 @@ export default function dualCurrencyStrategy(
         
     }
 
+    console.log(bought)
     return [coinsCount]
 
 }
