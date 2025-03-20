@@ -29,7 +29,7 @@ export default function dualCurrencyStrategy(
     }
 
     let canBuy = coins.length
-    let bought = 0
+    let bought = 1
     let currBudget = budgetToBuy // текущий бюджет с учётом возможного APR 
     let prevRow = normizedMatrix[0][0]
 
@@ -59,7 +59,6 @@ export default function dualCurrencyStrategy(
             if (strategy == 3 || strategy == 4) {
 
                 bought++
-                currBudget += budgetToBuy
 
                 if (strategy == 4) {
 
@@ -71,7 +70,8 @@ export default function dualCurrencyStrategy(
                         coinsCount[(localBuy-1) % coins.length] += currBudget / nextRow[1]
                         currBudget = budgetToBuy
 
-                    }
+                    } else currBudget += budgetToBuy
+
                 }
 
             }
