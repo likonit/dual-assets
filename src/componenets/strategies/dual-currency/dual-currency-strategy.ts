@@ -46,9 +46,10 @@ export default function dualCurrencyStrategy(
 
                 localBuy++
                 // реализуем стратегию 2
-                let currMarkerPrice = normizedMatrix[(localBuy-1) % coins.length][i][1]
+                let nextRow = normizedMatrix[(localBuy-1) % coins.length][i]
+                console.log(currRow, nextRow)
                 
-                coinsCount[(localBuy-1) % coins.length] += currBudget / currMarkerPrice
+                coinsCount[(localBuy-1) % coins.length] += currBudget / nextRow[1]
                 bought++
                 currBudget = budgetToBuy
 
