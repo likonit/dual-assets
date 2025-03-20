@@ -72,8 +72,6 @@ export default function dualCurrencyStrategy(
         
     }
 
-    console.log(bought, currBudget)
-
     return [coinsCount]
 
 }
