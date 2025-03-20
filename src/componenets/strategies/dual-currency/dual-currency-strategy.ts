@@ -7,10 +7,12 @@ export default function dualCurrencyStrategy(
     coins: Row[][], 
     budgetToBuy: number, 
     APR: number,
-    goalPrice: number, // множитель целевой цены
+    percentDown: number, // на сколько % опустится цена
+    days: number, //  дни ожидания целевой цены
     strategy: 1 | 2
 ) {
 
+    const goalPrice = 1 - percentDown / 100
     const coinsCount = [] // итоговое количество каждой из переданных монет
 
     let localBuy = 1 // индекс той монеты, которую будем покупать, 
@@ -30,7 +32,7 @@ export default function dualCurrencyStrategy(
     let currBudget = budgetToBuy // текущий бюджет с учётом возможного APR 
     let prevRow = normizedMatrix[0][0]
 
-    for (let i = 1; i < normizedMatrix[0].length; i++) {
+    for (let i = 1; i < normizedMatrix[0].length; i += days) {
 
         const currRow = normizedMatrix[(localBuy-1) % coins.length][i]
 
@@ -41,13 +43,12 @@ export default function dualCurrencyStrategy(
         // целевая цена не достигнута. получаем обратно USDT + APR
         if (currRow[1] >= prevRow[1]*goalPrice) {
 
-            currBudget *= 1 + (APR / 365 / 100)
+            currBudget *= 1 + (APR / 365 / 100 * days)
             if (strategy == 2) {
 
                 localBuy++
                 // реализуем стратегию 2
                 let nextRow = normizedMatrix[(localBuy-1) % coins.length][i]
-                console.log(currRow, nextRow)
                 
                 coinsCount[(localBuy-1) % coins.length] += currBudget / nextRow[1]
                 bought++
@@ -59,7 +60,7 @@ export default function dualCurrencyStrategy(
 
             // целевая цена достингута. покупаем монету по этой цене и получаем бонус APR 
             const cointGet = currBudget / (prevRow[1]*goalPrice)
-            coinsCount[(localBuy-1) % coins.length] += cointGet * (1 + (APR / 365 / 100))
+            coinsCount[(localBuy-1) % coins.length] += cointGet * (1 + (APR / 365 / 100 * days))
 
             bought++
             currBudget = budgetToBuy
