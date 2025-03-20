@@ -1,5 +1,6 @@
 import { Row } from "read-excel-file";
 import normalizeRows, { normalizedRow } from "../../../functions/normalizeRows.js";
+import { strategies } from "src/componenets/functions/calculateStrategyResult.js";
 
 // функция реализации стратегии бивалютного инвестирования
 // описание стратегии приведено в README.md
@@ -9,7 +10,7 @@ export default function dualCurrencyStrategy(
     APR: number,
     percentDown: number, // на сколько % опустится цена
     days: number, //  дни ожидания целевой цены
-    strategy: 1 | 2
+    strategy: strategies
 ) {
 
     const goalPrice = 1 - percentDown / 100
@@ -53,6 +54,13 @@ export default function dualCurrencyStrategy(
                 coinsCount[(localBuy-1) % coins.length] += currBudget / nextRow[1]
                 bought++
                 currBudget = budgetToBuy
+
+            }
+
+            if (strategy == 3) {
+
+                bought++
+                currBudget += budgetToBuy
 
             }
 
