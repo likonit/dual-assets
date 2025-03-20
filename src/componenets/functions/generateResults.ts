@@ -3,7 +3,7 @@ import { APR_1, APR_3, APR_5, APR_7 } from "../store/store.js";
 import calculateStrategyResult, { strategies } from "./calculateStrategyResult.js";
 import * as fs from "fs"
 
-export default async function generateResults(coins: Row[][]) {
+export default async function generateResults(coins: Row[][], nicePrice: number) {
 
     function str(line: any) {
 
@@ -24,7 +24,7 @@ export default async function generateResults(coins: Row[][]) {
             apr.forEach(item => {
 
                 const res = calculateStrategyResult((i as strategies), coins, +item[0], +item[1], days)
-                resultTextTable += `${str(item[0])} ${str(res.toFixed(2))}\n`
+                resultTextTable += `${str(item[0])} ${str(((res-nicePrice) / nicePrice).toFixed(2))}\n`
 
             })
 
@@ -36,6 +36,4 @@ export default async function generateResults(coins: Row[][]) {
 
     fs.writeFileSync(`results/${coins.length}coins.txt`, resultTextTable)
     
-    console.log(resultTextTable)
-
 }

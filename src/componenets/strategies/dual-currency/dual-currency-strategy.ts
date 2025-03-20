@@ -16,7 +16,7 @@ export default function dualCurrencyStrategy(
     const goalPrice = 1 - percentDown / 100
     const coinsCount = [] // итоговое количество каждой из переданных монет
 
-    let localBuy = 1 // индекс той монеты, которую будем покупать, 
+    let currentCoin = 1 // индекс той монеты, которую будем покупать, 
                      // если целевая цена не достигнута и мы получили доп. USDT
 
     let normizedMatrix: normalizedRow[][] = []
@@ -29,13 +29,14 @@ export default function dualCurrencyStrategy(
     }
 
     let canBuy = coins.length
-    let bought = 1
+    let bought = 0
     let currBudget = budgetToBuy // текущий бюджет с учётом возможного APR 
     let prevRow = normizedMatrix[0][0]
 
     for (let i = 1; i < normizedMatrix[0].length; i += days) {
 
-        const currRow = normizedMatrix[(localBuy-1) % coins.length][i]
+        // текущая цена для предыдущей монеты
+        const currRow = normizedMatrix[(currentCoin-1) % coins.length][i]
 
         // месяц обновился
         if (currRow[0][1] != prevRow[0][1]) canBuy += coins.length
@@ -47,10 +48,12 @@ export default function dualCurrencyStrategy(
             currBudget *= 1 + (APR / 365 / 100 * days)
             if (strategy == 2) {
 
-                localBuy++
-                let nextRow = normizedMatrix[(localBuy-1) % coins.length][i]
-                coinsCount[(localBuy-1) % coins.length] += currBudget / nextRow[1]
+                // покупаем текущую монету по рыночной цене
+                let nextRow = normizedMatrix[currentCoin % coins.length][i]
+                coinsCount[currentCoin % coins.length] += currBudget / nextRow[1]
                 
+                // эту монету уже нельзя бивалютно инвестировать
+                currentCoin++
                 bought++
                 currBudget = budgetToBuy
 
@@ -59,18 +62,18 @@ export default function dualCurrencyStrategy(
             if (strategy == 3 || strategy == 4) {
 
                 bought++
-
+                currBudget += budgetToBuy
                 if (strategy == 4) {
 
                     // если это последняя монета, которую мы можем купить в этом месяце - покупаем
                     if (bought == canBuy) {
 
-                        localBuy++
-                        let nextRow = normizedMatrix[(localBuy-1) % coins.length][i]
-                        coinsCount[(localBuy-1) % coins.length] += currBudget / nextRow[1]
+                        let nextRow = normizedMatrix[currentCoin % coins.length][i]
+                        coinsCount[currentCoin % coins.length] += currBudget / nextRow[1]
                         currBudget = budgetToBuy
+                        currentCoin++
 
-                    } else currBudget += budgetToBuy
+                    }
 
                 }
 
@@ -80,15 +83,15 @@ export default function dualCurrencyStrategy(
 
             // целевая цена достингута. покупаем монету по этой цене и получаем бонус APR 
             const cointGet = currBudget / (prevRow[1]*goalPrice)
-            coinsCount[(localBuy-1) % coins.length] += cointGet * (1 + (APR / 365 / 100 * days))
+            coinsCount[(currentCoin-1) % coins.length] += cointGet * (1 + (APR / 365 / 100 * days))
 
             bought++
             currBudget = budgetToBuy
 
         }
 
-        prevRow = normizedMatrix[localBuy % coins.length][i]
-        localBuy++
+        prevRow = normizedMatrix[currentCoin % coins.length][i]
+        currentCoin++
         
     }
 
