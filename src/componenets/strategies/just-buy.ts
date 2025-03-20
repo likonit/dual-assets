@@ -3,7 +3,7 @@ import normalizeRows from "../../functions/normalizeRows.js";
 
 // функция стратегии "классического" долгосрочного инвестирования
 // будем покупать монеты по рыночной цене, не учитывая комиссию брокера
-// каждый месяц первого числа
+// каждый месяц первого числа (кроме первого)
 export default function justBuy(rows: Row[], budgetToBuy: number) {
 
     let coinsCount = 0
@@ -13,7 +13,7 @@ export default function justBuy(rows: Row[], budgetToBuy: number) {
     // количество монет - это фиксированный бюджет для покупки (на один месяц)
     // делённое на текущую цену монет
     coinsCount += budgetToBuy / normalizedRows[0][1]
-
+    
     for (let i = 1; i < normalizedRows.length; i++) {
         let currDate = normalizedRows[i][0]
 

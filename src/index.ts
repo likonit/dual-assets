@@ -11,8 +11,9 @@ const eth = await readExcelFile("data/eth.xlsx", new Set([0]))
 const arr = [xrp, dash, btc, ltc, eth]
 
 const pricesJust = [justBuy(xrp, 1000), justBuy(dash, 1000), justBuy(btc, 1000), justBuy(ltc, 1000), justBuy(eth, 1000)]
-const pricesSmart_0 = dualCurrencyStrategy(arr, 1000, 700, 0)
-const pricesSmart_1 = dualCurrencyStrategy(arr, 1000, 700, 1)
+const pricesSmart_0 = dualCurrencyStrategy(arr, 1000, 422, 0.999, 1)
+const pricesSmart_1 = dualCurrencyStrategy(arr, 1000, 422, 0.999, 2)
+// const pricesSmart_1 = dualCurrencyStrategy(arr, 1000, 0.999, 422, 2)
 
 let sum_just_buy = 0
 let sum_smart_buy_0 = 0
