@@ -2,6 +2,10 @@ import { Row } from "read-excel-file";
 import { APR_1, APR_3, APR_5, APR_7 } from "../store/store.js";
 import calculateStrategyResult, { strategies } from "./calculateStrategyResult.js";
 import * as fs from "fs"
+import { configDotenv } from "dotenv";
+
+const config = configDotenv()
+const outputDir = process.env.RESULT_FOLDER
 
 export default async function generateResults(coins: Row[][], nicePrice: number) {
 
@@ -11,7 +15,7 @@ export default async function generateResults(coins: Row[][], nicePrice: number)
 
     }
 
-    let resultTextTable = `${coins.length} COINS TABLE\n\n\n`
+    let resultTextTable = `COMMON EARN: ${nicePrice.toFixed(2)}\n${coins.length} COINS TABLE\n\n\n`
 
     for (const i of [1, 2, 3, 4]) {
 
@@ -34,6 +38,6 @@ export default async function generateResults(coins: Row[][], nicePrice: number)
 
     }
 
-    fs.writeFileSync(`results/${coins.length}coins.txt`, resultTextTable)
+    fs.writeFileSync(`${outputDir}${coins.length}coins.txt`, resultTextTable)
     
 }
