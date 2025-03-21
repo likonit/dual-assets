@@ -42,7 +42,7 @@ def plot_individual_graphs(data):
                 fig, ax = plt.subplots(figsize=(6, 4), dpi=300)
                 ax.plot(aprs, percents, marker='o', linestyle='-', linewidth=2, markersize=6)
                 ax.set_xlabel("APR", fontsize=12, labelpad=12)
-                ax.set_ylabel("% прибыли", fontsize=12, labelpad=12)
+                ax.set_ylabel("% сверхприбыли", fontsize=12, labelpad=12)
                 ax.set_title(f"Стратегия #{strategy}, холд {day}d", fontsize=14, pad=20)
                 ax.grid(True, linestyle='--', linewidth=0.5)
                 

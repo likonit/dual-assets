@@ -7,7 +7,6 @@ const arr = [xrp, dash, btc, ltc, eth]
 const pricesJust5 = [justBuy(xrp, 1000), justBuy(dash, 1000), justBuy(btc, 1000), justBuy(ltc, 1000), justBuy(eth, 1000)]
 const pricesJust4 = [justBuy(xrp, 1000), justBuy(dash, 1000), justBuy(btc, 1000), justBuy(ltc, 1000)]
 const pricesJust3 = [justBuy(xrp, 1000), justBuy(dash, 1000), justBuy(btc, 1000)]
-
 let sum_just_buy5 = 0
 let sum_just_buy4 = 0
 let sum_just_buy3 = 0
