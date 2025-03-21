@@ -6,7 +6,7 @@ from collections import defaultdict
 import math
 from PIL import Image
 
-coinsCount = 5
+coinsCount = 3
 
 def parse_file(filename):
     data = defaultdict(lambda: defaultdict(list))
