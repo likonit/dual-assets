@@ -4,22 +4,22 @@ import calculateStrategyResult, { strategies } from "./calculateStrategyResult.j
 import * as fs from "fs"
 import { configDotenv } from "dotenv";
 
-const config = configDotenv()
+configDotenv()
 const outputDir = process.env.RESULT_FOLDER
 
 export default async function generateResults(coins: Row[][], nicePrice: number) {
 
     function str(line: any) {
 
-        return line.toString().replaceAll('.', ',')
+        return line.toString().replaceAll('.', '.')
 
     }
 
-    let resultTextTable = `COMMON EARN: ${nicePrice.toFixed(2)}\n${coins.length} COINS TABLE\n\n\n`
+    let resultTextTable = `COMMON EARN: ${nicePrice.toFixed(2)}\n${coins.length} COINS TABLE\n`
 
     for (const i of [1, 2, 3, 4]) {
 
-        resultTextTable += `STRATEGY ${i}\n\n`
+        resultTextTable += `STRATEGY ${i}\n`
         let days = 1
         for (const apr of [APR_1, APR_3, APR_5, APR_7]) {
 
@@ -28,7 +28,7 @@ export default async function generateResults(coins: Row[][], nicePrice: number)
             apr.forEach(item => {
 
                 const res = calculateStrategyResult((i as strategies), coins, +item[0], +item[1], days)
-                resultTextTable += `${str(item[0])} ${str(((res-nicePrice) / nicePrice).toFixed(2))}\n`
+                resultTextTable += `${str(item[0])} ${str(((res-nicePrice) / nicePrice * 100).toFixed(2))}\n`
 
             })
 
